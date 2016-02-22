@@ -167,7 +167,7 @@ elseif numel(varargin) > 1 && ischar(varargin{1})
     handles.EEG = EEG;
     return;
 else
-    cfg = getpref('SASICA','cfg',[]);
+    cfg = getpref('SASICA','cfg',getdefs);
 end
 % create command line for eegh
 if not(isempty(cfg))
@@ -999,6 +999,9 @@ try
     rmpref('SASICA','overwriteEEG')
 end
 SASICA(def)
+
+function resetprefs()
+resetprefs_Callback()
 
 function def = getdefs
 
