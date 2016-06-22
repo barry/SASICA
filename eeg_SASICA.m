@@ -115,7 +115,7 @@ if isempty(EEG.icawinv)
     errordlg('No ica weights in the current EEG dataset! Compute ICA on your data first.')
     error('No ica weights! Compute ICA on your data first.')
 end
-struct2ws(cfg.opts);
+eval(strrep(structvars(cfg.opts),'S.','cfg.opts.'));
 
 rejfields = {'icarejautocorr' 'Autocorrelation' [         0         0    1.0000]
     'icarejfocalcomp' 'Focal components' [         0    0.5000         0]
@@ -159,7 +159,7 @@ if cfg.autocorr.enable
     %% Autocorrelation
     % Identifying noisy components
     %----------------------------------------------------------------
-    struct2ws(cfg.autocorr);
+    eval(strrep(structvars(cfg.autocorr),'S.','cfg.autocorr.'));
 
     if ~nocompute
         Ncorrint=round(autocorrint/(1000/EEG.srate)); % number of samples for lag
@@ -224,7 +224,7 @@ if cfg.focalcomp.enable
     disp('Focal components.')
     %% Focal activity
     %----------------------------------------------------------------
-    struct2ws(cfg.focalcomp);
+    eval(strrep(structvars(cfg.focalcomp),'S.','cfg.focalcomp.'));
     if ~nocompute
         rej = false(1,ncomp);
         clear mywt
@@ -274,7 +274,7 @@ if cfg.trialfoc.enable
     rejects(3) = 1;
     disp('Focal trial activity.');
     %% Focal trial activity
-    struct2ws(cfg.trialfoc);
+    eval(strrep(structvars(cfg.trialfoc),'S.','cfg.trialfoc.'));
     if ~nocompute
         % Find components with focal trial activity (those that have activity
         % on just a few trials and are almost zero on others)
@@ -330,7 +330,7 @@ if cfg.SNR.enable
     rejects(4) = 1;
     disp('Signal to noise ratio.')
     %% Low Signal to noise components
-    struct2ws(cfg.SNR);
+    eval(strrep(structvars(cfg.SNR),'S.','cfg.SNR.'));
     if ~nocompute
         rejfields{4,2} = ['Signal to noise Time of interest ' num2str(snrPOI,'%g ') ' and Baseline ' num2str(snrBL,'%g ') ' ms.'];
 
@@ -381,7 +381,7 @@ if cfg.resvar.enable
     rejects(5) = 1;
     disp('Residual variance thresholding.')
     %% High residual variance
-    struct2ws(cfg.resvar);
+    eval(strrep(structvars(cfg.resvar),'S.','cfg.resvar.'));
     if ~nocompute
         resvar = 100*[EEG.dipfit.model.rv];
         rej = resvar > thresh;
@@ -425,7 +425,7 @@ if cfg.EOGcorr.enable
     rejects(6) = 1;
     disp('Correlation with EOGs.');
     %% Correlation with EOG
-    struct2ws(cfg.EOGcorr);
+    eval(strrep(structvars(cfg.EOGcorr),'S.','cfg.EOGcorr.'));
     if ~nocompute
         noV = 0;noH = 0;
         try
@@ -538,7 +538,7 @@ if cfg.chancorr.enable
     rejects(6) = 1;
     disp('Correlation with other channels.')
     %% Correlation with other channels
-    struct2ws(cfg.chancorr);
+    eval(strrep(structvars(cfg.chancorr),'S.','cfg.chancorr.'));
     try
         [chan cellchannames channames] = chnb(channames);
     end
@@ -606,7 +606,7 @@ if cfg.chancorr.enable
         else legidx = [];
         end
         legstr = legstr(legidx);
-        
+
         ylabel('Correlation coef (r)');
         xlabel('Components');
         toplot = c;
@@ -633,7 +633,7 @@ if cfg.ADJUST.enable
     rejects(7) = 1;
     disp('ADJUST methods selection')
     %% ADJUST
-    struct2ws(cfg.ADJUST);
+    eval(strrep(structvars(cfg.ADJUST),'S.','cfg.ADJUST.'));
     if ~nocompute
         [art, horiz, vert, blink, disc,...
             soglia_DV, diff_var, soglia_K, med2_K, meanK, soglia_SED, med2_SED, SED, soglia_SAD, med2_SAD, SAD, ...
@@ -663,7 +663,7 @@ if cfg.FASTER.enable
     rejects(8) = 1;
     disp('FASTER methods selection')
     %% FASTER
-    struct2ws(cfg.FASTER);
+    eval(strrep(structvars(cfg.FASTER),'S.','cfg.FASTER.'));
     if ~nocompute
         blinkchans = chnb(blinkchans);
         listprops = component_properties(EEG,blinkchans);
@@ -681,7 +681,7 @@ if cfg.MARA.enable
     rejects(9) = 1;
     disp('MARA methods selection')
     %% MARA
-    struct2ws(cfg.MARA);
+    eval(strrep(structvars(cfg.MARA),'S.','cfg.MARA.'));
     if ~nocompute
         [rej info] = MARA(EEG);
         MR.rej = false(1,size(EEG.icaact,1));

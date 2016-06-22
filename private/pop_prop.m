@@ -181,7 +181,7 @@ toPlot_axprops = {};
 toPlot_title = {}; SXticks = {};co = [];
 for i = 1:numel(computed)
     if strcmp(computed{i},'icaADJUST')
-        struct2ws(EEG.reject.SASICA.icaADJUST)
+        eval(strrep(structvars(EEG.reject.SASICA.icaADJUST),'S.','EEG.reject.SASICA.icaADJUST.'))
         toPlot{end+1}{1} = (SAD(chanorcomp)-med2_SAD)/(soglia_SAD-med2_SAD);
         toPlot{end}{2} = (SED(chanorcomp)-med2_SED)/(soglia_SED-med2_SED);
         toPlot{end}{3} = (GDSF(chanorcomp)-med2_GDSF)/(soglia_GDSF-med2_GDSF);
